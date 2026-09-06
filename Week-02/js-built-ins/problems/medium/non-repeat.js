@@ -20,7 +20,23 @@
   Once you've implemented the logic, test your code by running
   - `npm run test-nonrepeat`
 */
-function nonrepeat(str) {
-  // Your code here
+function nonrepeat(s) {
+  let str = s.trim();
+  if(str == "") return null;
+  let freq = {};
+
+  for(let i=0; i<str.length; i++) {
+    let key = str[i];
+    if(key == ' ') continue;
+    if(key in freq) freq[key] = freq[key] + 1;
+    else freq[key] = 1;
+  }
+
+  for(let i=0; i<str.length; i++) {
+    let ch = str[i];
+    if(freq[ch] == 1) return str[i];
+  }
+
+  return null;
 }
 module.exports = nonrepeat;
