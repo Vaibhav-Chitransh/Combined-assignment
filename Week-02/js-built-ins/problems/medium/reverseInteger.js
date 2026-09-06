@@ -22,7 +22,23 @@
 */
 
 function reverseInteger(num) {
-  // Your code here
+  let str = num.toString();
+  let updatedStr = str;
+  let isNeg = false;
+
+  if(str[0] == '-') {
+    updatedStr = str.slice(1);
+    isNeg = true;
+  }
+
+  let ans = 0;
+  for(let i=updatedStr.length - 1; i>=0; i--) {
+    let num = updatedStr[i] - '0';
+    ans = ans*10 + num;
+  }
+
+  if(isNeg) ans *= -1;
+  return ans;
 }
 
 module.exports = reverseInteger;
