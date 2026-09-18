@@ -23,7 +23,35 @@
 
 
 function compressWords(arr) {
-  // Your code here
+  let len = arr.length;
+  if(len <= 1) return arr;
+
+  let prev = arr[0];
+  let freq = 1;
+  let iter = 1;
+
+  let res = [];
+
+  while(iter < len) {
+    let curr = arr[iter];
+    if(curr == prev) freq++;
+    else {
+      let word = prev;
+      if(freq > 1) word += freq.toString();
+
+      res.push(word);
+      prev = curr;
+      freq = 1;
+    }
+
+    iter++;
+  }
+
+  let word = prev;
+  if(freq > 1) word += freq.toString();
+  res.push(word);
+
+  return res;
 }
 
 
