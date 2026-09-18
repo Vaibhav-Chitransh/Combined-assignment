@@ -19,7 +19,26 @@
 */
 
 function getUniqueElements(arr) {
-  // Your code here
+  let res = [];
+  let pres = [];
+
+  for(let i=0; i<arr.length; i++) {
+    let num = arr[i];
+    let found = false;
+    for(let j=0; j<pres.length; j++) {
+      if(pres[j] === num) {
+        found = true;
+        break;
+      }
+    }
+
+    if(!found) {
+      res.push(num);
+      pres.push(num);
+    }
+  }
+
+  return res;
 }
 
 module.exports = getUniqueElements;
