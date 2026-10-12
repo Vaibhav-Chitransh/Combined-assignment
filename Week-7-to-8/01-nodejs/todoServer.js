@@ -45,5 +45,59 @@
   const app = express();
   
   app.use(bodyParser.json());
+
+  let TODOS = [];
+  let TODO_ID = 1;
+
+  app.get('/todos', (req, res) => {
+    res.status(200).json(TODOS);
+  })
+
+  app.get('/todos/:todoId', (req, res) => {
+    const todoId = parseInt(req.params.todoId);
+
+    let todo = TODOS.find((todo) => todo.id === todoId);
+    if(!todo) return res.status(404).send("Not Found");
+
+    res.status(200).json(todo);
+  })
+
+  app.post('/todos', (req, res) => {
+    const title = req.body.title;
+    const description = req.body.description;
+
+    TODOS.push({id: TODO_ID++, title, description, completed: false});
+    res.status(201).json({id: TODO_ID - 1});
+  })
+
+  app.put('/todos/:todoId', (req, res) => {
+    const title = req.body.title;
+    const completed = req.body.completed;
+    const todoId = parseInt(req.params.todoId);
+
+    let todo = TODOS.find((todo) => todo.id === todoId);
+    if(!todo) return res.status(404).send("Not Found");
+
+    todo.title = title;
+    todo.completed = completed;
+
+    res.status(200).json({message: "Todo updated successfully"});
+  })
+
+  app.delete('/todos/:todoId', (req, res) => {
+    const todoId = parseInt(req.params.todoId);
+
+    let prevSize = TODOS.length;
+    TODOS = TODOS.filter((todo) => todo.id !== todoId);
+
+    let currSize = TODOS.length;
+
+    if(currSize >= prevSize) return res.status(404).send("Not Found");
+    res.status(200).json({message: "Todo deleted successfully"});
+  })
+
+  app.use((req, res) => {
+    res.status(404).send("Not Found");
+  })
   
   module.exports = app;
