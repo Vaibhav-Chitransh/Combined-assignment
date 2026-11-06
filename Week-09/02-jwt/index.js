@@ -8,7 +8,9 @@ const jwtPassword = 'secret_key';
  * @returns {string|null} A JWT if role is valid; otherwise null.
  */
 function signJwtWithRole(username, role) {
-    // Your code here
+    if(!username || (role !== 'admin' && role !== 'guest')) return null;
+    const token = jwt.sign({username, role}, jwtPassword);
+    return token;
 }
 
 /**
@@ -17,5 +19,17 @@ function signJwtWithRole(username, role) {
  * @returns {boolean} True if the role in the payload is 'admin', false otherwise.
  */
 function isAdmin(token) {
-    // Your code here
+    try {
+        const decoded = jwt.verify(token, jwtPassword);
+        if(decoded.role === 'admin') return true;
+        return false;
+    } catch {
+        return false;
+    }
+}
+
+module.exports = {
+    signJwtWithRole,
+    isAdmin,
+    jwtPassword
 }
