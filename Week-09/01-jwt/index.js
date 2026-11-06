@@ -14,7 +14,13 @@ const jwtPassword = 'secret';
  *                        the password does not meet the length requirement.
  */
 function signJwt(username, password) {
-    // Your code here
+    if(!username || !password) return null;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if(!emailRegex.test(username) || password.length < 6) return null;
+
+    const token = jwt.sign({username, password}, jwtPassword);
+    return token;
 }
 
 /**
@@ -26,7 +32,16 @@ function signJwt(username, password) {
  *                    using the secret key.
  */
 function verifyJwt(token) {
-    // Your code here
+    try {
+        const isValidToken = jwt.verify(token, jwtPassword);
+        const username = isValidToken.username;
+        const password = isValidToken.password;
+
+        if(!username || !password) return false;
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 /**
@@ -37,7 +52,9 @@ function verifyJwt(token) {
  *                         Returns false if the token is not a valid JWT format.
  */
 function decodeJwt(token) {
-    // Your code here
+    const decoded = jwt.decode(token);
+    if(!decoded) return false;
+    return true;
 }
 
 
